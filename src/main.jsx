@@ -1,11 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import Social from './components/Social'
+import Rotas from './components/routes'
 import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Social />
+    <Rotas />
   </StrictMode>,
 )
