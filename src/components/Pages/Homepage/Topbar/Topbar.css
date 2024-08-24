@@ -1,0 +1,54 @@
+/* Estilo geral para o header */
+.topbar {
+  background-color: #1313d2; /* Cor de fundo da topbar */
+  padding: 10px 20px; /* Espaçamento interno */
+  display: flex;
+  justify-content: center; /* Centraliza o conteúdo horizontalmente */
+  align-items: center; /* Alinha o conteúdo verticalmente */
+  color: white; /* Cor do texto */
+  position: fixed; /* Fixa a topbar na tela */
+  top: 0; /* Posiciona a topbar no topo da tela */
+  left: 0; /* Garante que a topbar se estenda até o lado esquerdo */
+  width: 100%; /* Faz a topbar ocupar toda a largura da tela */
+  z-index: 1000; /* Garante que a topbar esteja acima de outros conteúdos */
+}
+
+/* Adiciona um espaçamento extra no topo para evitar sobreposição do conteúdo */
+body {
+  margin-top: 200px; /* Ajuste conforme a altura da topbar */
+  margin-bottom: 60px;
+}
+
+/* Estilo para o conteúdo dentro do header */
+.topbar-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Espaça o título e os links */
+  align-items: center; /* Alinha verticalmente o título e os links */
+  max-width: 1200px; /* Define uma largura máxima para o conteúdo */
+  margin: 0 auto; /* Centraliza o conteúdo horizontalmente */
+}
+
+/* Estilo para o título da topbar */
+.topbar-title {
+  margin: 0; /* Remove a margem padrão do título */
+  flex: 1; /* Permite que o título ocupe o máximo de espaço disponível */
+  text-align: center; /* Centraliza o título */
+}
+
+/* Estilo para a navegação (links) */
+.topbar-nav {
+  display: flex;
+  gap: 20px; /* Espaçamento entre os links */
+}
+
+.topbar-nav a {
+  color: white; /* Cor dos links */
+  text-decoration: none; /* Remove o sublinhado dos links */
+  font-weight: bold; /* Torna o texto dos links negrito */
+}
+
+/* Adiciona uma mudança de cor ao passar o mouse sobre os links */
+.topbar-nav a:hover {
+  color: #ddd; /* Cor dos links ao passar o mouse */
+}

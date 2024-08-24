@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
-import Home from "../Pages/Homepage/Homepage";
-import Login from "../Pages/Loginpage/Loginpage";
-import Medal from "../Pages/RegistermedalPage/RegisterMedalPage";
+import Home from "../Pages/Homepage/index";
+import Login from "../Pages/Login/index";
+import Medal from "../Pages/Registermedal/index";
 
 const Rotas =() => {
 

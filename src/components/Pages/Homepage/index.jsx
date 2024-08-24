@@ -1,0 +1,76 @@
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import Topbar from './Topbar/Topbar';
+import './index.css';
+import bronze from './medals/bronze.png';
+import ouro from './medals/ouro.png';
+import prata from './medals/prata.png';
+
+function Home() {
+  const  [countries, setCountries] = useState([])
+
+  const getCountries = async () => {
+
+    try {
+      const response = await axios.get('http://localhost:8080/country/all',
+          {
+            params: {
+              size:50,
+            }
+          }
+        );
+        const data = response.data.content
+        setCountries(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getCountries();
+  }, [])
+
+  const calcularTotais = (medalhas) => {
+    const totais = { Gold: 0, Silver: 0, Bronze: 0 };
+    if(medalhas.length===0){
+      return totais
+    }
+    medalhas.forEach(medalha => {
+      totais[medalha.type]++;
+    });
+    return totais;
+  };
+
+  return (
+ <div>
+  <Topbar/>
+  <div className='container'>
+  <table className="table table-striped">
+      <thead>
+        <tr>
+          <th>País</th>
+          <th> <img src={ouro} alt="Ouro" width="20" height="20" /></th>
+          <th><img src={prata} alt="Prata" width="20" height="20" /></th>
+          <th><img src={bronze} alt="Bronze" width="20" height="20" /></th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {countries.map(country => (
+          <tr key={country.id}>
+            <td>{country.name}</td>
+            <td>{calcularTotais(country.medals).Gold}</td>
+            <td>{calcularTotais(country.medals).Silver}</td>
+            <td>{calcularTotais(country.medals).Bronze}</td>
+            <td>{country.medals.length}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+ </div>   
+  );
+};
+
+
+export default Home;
