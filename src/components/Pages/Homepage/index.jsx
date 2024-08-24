@@ -49,9 +49,9 @@ function Home() {
       <thead>
         <tr>
           <th>País</th>
-          <th> <img src={ouro} alt="Ouro" width="20" height="20" /></th>
-          <th><img src={prata} alt="Prata" width="20" height="20" /></th>
-          <th><img src={bronze} alt="Bronze" width="20" height="20" /></th>
+          <th> <img src={ouro} alt="Ouro" width="25" height="25" /></th>
+          <th><img src={prata} alt="Prata" width="25" height="25" /></th>
+          <th><img src={bronze} alt="Bronze" width="25" height="25" /></th>
           <th>Total</th>
         </tr>
       </thead>
