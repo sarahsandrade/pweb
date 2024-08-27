@@ -17,7 +17,6 @@ function Home() {
       const data = response.data;
       setCountries(data);
 
-      // Fetch medals for each country after countries are loaded
       const medalsPromises = data.map(country => getMedals(country.id));
       const medalsData = await Promise.all(medalsPromises);
 
