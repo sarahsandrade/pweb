@@ -8,77 +8,87 @@ import Topbar from '../../Topbar/Topbar';
 import './index.css';
 
 function Home() {
-  const  [countries, setCountries] = useState([])
-  let posicion = 0;
+  const [countries, setCountries] = useState([]);
+  const [medals, setMedals] = useState({});
 
   const getCountries = async () => {
-
     try {
-      const response = await axios.get('http://localhost:8080/country/all',
-          {
-            params: {
-              size:50,
-            }
-          }
-        );
-        const data = response.data.content
-        setCountries(data);
+      const response = await axios.get('http://localhost:8080/country/all');
+      const data = response.data;
+      setCountries(data);
+
+      // Fetch medals for each country after countries are loaded
+      const medalsPromises = data.map(country => getMedals(country.id));
+      const medalsData = await Promise.all(medalsPromises);
+
+      const medalsObject = medalsData.reduce((acc, medalData) => {
+        acc[medalData.id] = medalData;
+        return acc;
+      }, {});
+
+      setMedals(medalsObject);
+
+      // Ordena os países pela quantidade de medalhas de ouro
+      const sortedCountries = [...data].sort((a, b) => {
+        const goldA = medalsObject[a.id]?.qtdGold || 0;
+        const goldB = medalsObject[b.id]?.qtdGold || 0;
+        return goldB - goldA;
+      });
+
+      setCountries(sortedCountries);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  const getMedals = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/country/${id}`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getCountries();
-  }, [])
-
-  const calcularTotais = (medalhas) => {
-    const totais = { Gold: 0, Silver: 0, Bronze: 0 };
-    if(medalhas.length===0){
-      return totais
-    }
-    medalhas.forEach(medalha => {
-      totais[medalha.type]++;
-    });
-    return totais;
-  };
+  }, []);
 
   return (
- <div>
-  <Topbar/>
-  <div className='container'>
-  <table className="table table-striped">
-      <thead>
-        <tr>
-          <th> </th>
-          <th>País</th>
-          <th> <img src={ouro} alt="Ouro" width="25" height="25" /></th>
-          <th><img src={prata} alt="Prata" width="25" height="25" /></th>
-          <th><img src={bronze} alt="Bronze" width="25" height="25" /></th>
-          <th>Total</th>
-          <th>Seguir</th>
-        </tr>
-      </thead>
-      <tbody>
-        {countries.map(country => (
-          <tr key={country.id}>
-            <td>{++posicion}</td>
-            <td>
-            <Link to={`/country/${country.id}`}>{country.name}</Link>
-            </td>
-            <td>{calcularTotais(country.medals).Gold}</td>
-            <td>{calcularTotais(country.medals).Silver}</td>
-            <td>{calcularTotais(country.medals).Bronze}</td>
-            <td>{country.medals.length}</td>
-            <td> <input type="checkbox"id={country.id}/></td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
- </div>   
+    <div>
+      <Topbar />
+      <div className='container'>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th> </th>
+              <th>País</th>
+              <th><img src={ouro} alt="Ouro" width="25" height="25" /></th>
+              <th><img src={prata} alt="Prata" width="25" height="25" /></th>
+              <th><img src={bronze} alt="Bronze" width="25" height="25" /></th>
+              <th>Total</th>
+              <th>Seguir</th>
+            </tr>
+          </thead>
+          <tbody>
+            {countries.map((country, index) => (
+              <tr key={country.id}>
+                <td>{index + 1}</td>
+                <td>
+                  <Link to={`/country/${country.id}`}>{country.countryName}</Link>
+                </td>
+                <td>{medals[country.id]?.qtdGold || 0}</td>
+                <td>{medals[country.id]?.qtdSilver || 0}</td>
+                <td>{medals[country.id]?.qtdBronze || 0}</td>
+                <td>{medals[country.id]?.totalMedals || 0}</td>
+                <td><input type="checkbox" id={country.id} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
-};
-
+}
 
 export default Home;
